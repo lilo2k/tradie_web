@@ -8,7 +8,6 @@
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
-        "heroku-postbuild": "cd client && npm install && npm build",
         "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && cd client && npm install && npm run build",
         "client": "cd client && npm start",
         "server": "nodemon app.js",
