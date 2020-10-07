@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- 12.18.3
+deploy:
+  - provider: heroku
+    api_key:
+      secure: cXPXyP+YDPjg1tuC/OsYyDNRAHlNTy+6soGX9FTG0738jY5mXLbVJoY79MaSSJ5xSVTo11RyhDJU7lDzHE0h44WDwTNQt9E2jTacoEE/Tlkv0vhRwiJQmHG3qe81wZ8ECZPBvTO+xAGcpgenBKI6o80WSmrwzO5oNDdH8R/2QVS4wBJ2a/M0VGVEmJTVpp901hUhomZoKUcYxTKTMkaHOhE2kMUM90HMnHjHpUZt5zvSv5FcKDbb4NmkcbOBts+UMK1wN096axeU4NgecN4ORUySctUaUmOXkcIjtWDzR7TXgkGZp5pVCr14q8tlXNrZ0VLBUvWxNK6nzEpu9eNxiO+f87rxQp0lI76P9sg6JgwQbLyymm2YSvh+SZYH6VLuhnytNxUXY4esEIYubdqRcN+4/0ISG27lxZpng+RV0S9ZuHwlTjUMXGj/1opXPIoYDuYvAWy9LgEBJVCIt1ll8/LukXqZRFa7RkVTfmH1xmJ0qyRk96R/FD34q7+4Hf9k439xHxQXnRcIMW47JFnoq8mHPwf3Vsmle22efo0y+KW7gSmeym1r+9xuY4CL+w3YSYFJ0G/K7O0dGWPopRvY23sBELn1J89YrmW1ZO4b9CcIFNt/xmcpN1+xmY4RjX2lVX9wVB+bQWGBiAcLd4xHvU5tbkU2wwb0dzLd3t26WOQ=
+    app: tradie-web
+    on:
+      repo: lilo2k/tradie_web
+      branch: master
+branches:
+  only:
+  - master
