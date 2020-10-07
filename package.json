@@ -10,7 +10,8 @@
         "start": "node app.js",
         "heroku-postbuild": "cd client && yarn install && yarn build",
         "client": "cd client && yarn start",
-        "server": "nodemon app.js"
+        "server": "nodemon app.js",
+        "test": "echo \"Error: no test specified\" && exit 0"
     },
     "author": "Hemakshi Sachdev",
     "license": "ISC",
