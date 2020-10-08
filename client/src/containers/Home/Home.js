@@ -59,7 +59,7 @@ class Home extends Component {
                 to={this.state.showMyArticles ? "/" : "/article/myarticles"}
                 buttonClasses={['btn', 'btn-outline-info', 'mr-3', 'MyArticlesButton']}
                 onClick={this.toggleShowMyArticles}>
-                    { this.state.showMyArticles ? 'All Articles' : 'My Articles' }
+                    { this.state.showMyArticles ? 'All Jobs' : 'My Jobs' }
                 </WrappedLink>
 
         return (
