@@ -7,8 +7,8 @@ import InputField from '../../../components/InputField/InputField';
 
 const FIELDS = [
     {name: 'title', type: 'text', label: 'Title'},
-    {name: 'author', type: 'text', label: 'Author', disabled: 'disabled'}
-];
+    {name: 'author', type: 'text', label: 'Customer', disabled: 'disabled'}
+]; 
 
 class EditArticle extends Component {
     state = {
@@ -104,12 +104,12 @@ class EditArticle extends Component {
         return (
             <div className="container">
                 <br />
-                <h3 className="text-center">Edit Article</h3>
+                <h3 className="text-center">Edit Job</h3>
                 <div className="jumbotron">
                     <form onSubmit={this.handleEditArticleSubmit}>
                         {inputFields}
                         <div className="form-group">
-                            <label>Body</label>
+                            <label>Description</label>
                             <textarea
                                 name="body" style={{height: '200px'}}
                                 className="form-control"

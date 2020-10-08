@@ -7,7 +7,7 @@ import InputField from '../../../components/InputField/InputField';
 
 const FIELDS = [
     {name: 'title', type: 'text', label: 'Title'},
-    {name: 'author', type: 'text', label: 'Author', disabled: 'disabled'}
+    {name: 'author', type: 'text', label: 'Customer', disabled: 'disabled'}
 ];
 
 class AddArticle extends Component {
@@ -92,7 +92,7 @@ class AddArticle extends Component {
         return (
             <div className="container">
                 <br />
-                <h3 className="text-center">Add Article</h3>
+                <h3 className="text-center">Add Job</h3>
                 <div className="jumbotron">
                     <form onSubmit={this.handleNewArticleSubmit}>
                         <InputField key={FIELDS[0].name}

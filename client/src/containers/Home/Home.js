@@ -67,7 +67,7 @@ class Home extends Component {
                 <br />
                 <div className="Header">
                     <h1 style={{display: 'inline-block'}}>All Jobs</h1>
-                    <WrappedLink to="/article/add" buttonClasses={['btn', 'btn-primary', 'mr-3', 'AddArticleButton']}>Add Article</WrappedLink>
+                    <WrappedLink to="/article/add" buttonClasses={['btn', 'btn-primary', 'mr-3', 'AddArticleButton']}>Add Job</WrappedLink>
                     {this.props.isAuthenticated && showArticlesLink}
                 </div>
                 <br />
