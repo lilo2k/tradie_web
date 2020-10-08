@@ -62,7 +62,7 @@ class Home extends Component {
                     { this.state.showMyArticles ? 'All Jobs' : 'My Jobs' }
                 </WrappedLink>
 
-        return (
+        return ( 
             <div className="container">
                 <br />
                 <div className="Header">
