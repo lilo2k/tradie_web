@@ -17,6 +17,9 @@ export const getAllArticles = () => {
         fetch('/api/articles')
         .then(res => res.json())
         .then(res => {
+            // console.log(res.articles);
+            console.log(JSON.stringify(res.articles));
+
             localStorage.setItem('BasicMERNStackAppAllArticles', JSON.stringify(res.articles));
             dispatch({ type: actionTypes.GOT_ALL_ARTICLES, articles: res.articles })
         })

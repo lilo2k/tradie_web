@@ -9,6 +9,8 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import articlesReducer from './store/reducers/articlesReducer';
 import usersReducer from './store/reducers/usersReducer';
 
+import 'semantic-ui-css/semantic.min.css'
+
 // import registerServiceWorker from './registerServiceWorker';
 
 const rootReducer = combineReducers({

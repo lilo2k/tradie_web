@@ -46,6 +46,8 @@ const isAuthenticated = (req, res, next) => {
 
 router.get('/', (req, res) => {
     Article.find({}, (err, articles) => {
+        // console.log(articles);
+        console.log({articles});
         res.json({ articles });
     })
 });

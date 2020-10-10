@@ -23,6 +23,22 @@ const ArticleSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
         required: true
+    },
+    job_id: {
+        type: String,
+        required: false
+    },
+    job_assignee: {
+        type: String,
+        required: false
+    },
+    work_date: {
+        type: String,
+        required: false
+    },
+    work_time: {
+        type: String,
+        require: false
     }
 });
 
