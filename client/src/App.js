@@ -18,7 +18,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path="/article/add" component={AddArticle} />
                     <Route path="/article/edit/:id" component={EditArticle} />
-                    <Route path="/article/quote/:id" component={AddQuotation} />
+                    <Route path="/quote/add/:id" component={AddQuotation} />
                     <Route path="/articles/:id" component={FullArticle} />
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={Signup} />

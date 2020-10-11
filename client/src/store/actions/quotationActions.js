@@ -60,9 +60,12 @@ export const submitNewArticle = (articleData) => {
     }
 };
 
-export const saveQuotation = (articleId, quotationData) => {
+export const saveQuotation = (quotationData) => {
+    console.log("add quotation");
+    // console.log("articleid:" + articleId);
+    console.log(quotationData);
     return dispatch => {
-        return fetch('/api/quotation/save/' + articleId, options(quotationData))
+        return fetch('/api/quotations/add', options(quotationData))
         .then(res => res.json())
     }
 }

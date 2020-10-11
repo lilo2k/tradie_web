@@ -125,7 +125,8 @@ class AddArticle extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.users.isAuthenticated,
-        authenticatedUsername: state.users.authenticatedUsername
+        authenticatedUsername: state.users.authenticatedUsername,
+        user_id: state.users.user_id
     };
 }
 

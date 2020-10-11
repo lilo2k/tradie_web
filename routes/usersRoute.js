@@ -122,7 +122,8 @@ router.post('/login', (req, res) => {
                     if (isMatch) {
                         const token = jwt.sign({
                                 id: user._id,
-                                username: user.username
+                                username: user.username,
+                                user_id: user.user_id
                             }, config.jwtSecret);
                         res.json({ token, success: 'success' })
                     } else {

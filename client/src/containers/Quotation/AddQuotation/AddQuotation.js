@@ -5,17 +5,20 @@ import { saveArticle } from '../../../store/actions/articlesActions';
 import { saveQuotation } from '../../../store/actions/quotationActions';
 import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
+import jwt from 'jsonwebtoken';
 
 const FIELDS = [
-    {name: 'job_id', type: 'text', label: 'Job ID', disabled: 'disabled'},
-    {name: 'title', type: 'text', label: 'Job', disabled: 'disabled'},
-    {name: 'author', type: 'text', label: 'Customer', disabled: 'disabled'},
-    {name: 'work_date', type: 'text', label: 'Date', disabled: 'disabled'},
-    {name: 'work_time', type: 'text', label: 'Time', disabled: 'disabled'},
-    {name: 'workers', type: 'text', label: 'Number of workers'},
-    {name: 'wage', type: 'text', label: 'Hourly wage'},
-    {name: 'price', type: 'text', label: 'Total Price'},
-]; 
+    { name: 'job_id', type: 'text', label: 'Job ID', disabled: 'disabled' },
+    { name: 'title', type: 'text', label: 'Job', disabled: 'disabled' },
+    { name: 'author', type: 'text', label: 'Customer', disabled: 'disabled' },
+    { name: 'work_date', type: 'text', label: 'Date', disabled: 'disabled' },
+    { name: 'work_time', type: 'text', label: 'Time', disabled: 'disabled' },
+    { name: 'workers', type: 'text', label: 'Number of workers' },
+    { name: 'wage', type: 'text', label: 'Hourly wage' },
+    { name: 'hours', type: 'text', label: 'Work hours' },
+    { name: 'price', type: 'text', label: 'Total Price' },
+    // {name: 'trader_user_id', type: 'hidden', value: ''},
+];
 
 class AddQuotation extends Component {
     state = {
@@ -26,7 +29,7 @@ class AddQuotation extends Component {
     componentWillMount() {
         const articleId = this.props.match.params.id;
         let article, errors;
-        if (localStorage.getItem('Edit' + articleId) === null ) {
+        if (localStorage.getItem('Edit' + articleId) === null) {
             localStorage.setItem('Edit' + articleId, JSON.stringify({ article: this.props.article, errors: {} }));
             article = this.props.article;
             errors = {};
@@ -38,8 +41,8 @@ class AddQuotation extends Component {
         this.setState(prevState => {
             return {
                 ...prevState,
-                article: {...article},
-                errors: {...errors}
+                article: { ...article },
+                errors: { ...errors }
             };
         });
     }
@@ -60,40 +63,54 @@ class AddQuotation extends Component {
 
         const errors = { ...this.state.errors, ...this.handleValidation(field, value) }
         this.setState((prevState) => {
+            console.log(this.props.user_id);
             return {
                 ...prevState,
                 article: {
                     ...prevState.article,
-                    [field]: value
+                    [field]: value,
                 },
-                errors: {...errors}
+                errors: { ...errors }
             };
         }, () => localStorage.setItem('Edit' + this.state.article._id, JSON.stringify(this.state)));
     }
 
-    handleEditArticleSubmit = (e) => {
-        return;
+    handleAddQuoteSubmit = (e) => {
         e.preventDefault();
-        let errors = {...this.state.errors};
+        console.log("add quotation");
+        let errors = { ...this.state.errors };
         const formValuesValid = Object.keys(errors).filter(field => errors[field] !== "").length === 0 ? true : false;
-        if ( !formValuesValid ) {
+        if (!formValuesValid) {
             return;
         } else {
-            this.props.saveQuotation(this.props.match.params.id, this.state.article)
-            .then(res => {
-                if (res.errors) {
-                    this.setState(prevState => {
-                        return {
-                            ...prevState,
-                            article: {...prevState.article},
-                            errors: {...prevState.errors, ...res.errors}
-                        };
+            console.log(this.state.article);
+            console.log(this.props.user_id);
+            console.log(this.props.authenticatedUsername);
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    article: {
+                        ...prevState.article,
+                        trader_user_id: this.props.user_id
+                    }
+                };
+            }, () => {
+                this.props.saveQuotation(this.state.article)
+                    .then(res => {
+                        if (res.errors) {
+                            this.setState(prevState => {
+                                return {
+                                    ...prevState,
+                                    article: { ...prevState.article },
+                                    errors: { ...prevState.errors, ...res.errors }
+                                };
+                            });
+                        } else {
+                            localStorage.removeItem('Edit' + this.props.match.params.id);
+                            this.props.history.push('/articles/' + this.props.match.params.id);
+                        }
                     });
-                } else {
-                    localStorage.removeItem('Edit' + this.props.match.params.id);
-                    this.props.history.push('/articles/' + this.props.match.params.id);
-                }
-            })
+            });
         }
     }
 
@@ -104,22 +121,22 @@ class AddQuotation extends Component {
     render() {
         const inputFields = FIELDS.map(field =>
             <InputField key={field.name}
-                        type={field.type} name={field.name} label={field.label}
-                        defaultValue={this.state.article[field.name]} disabled={field.disabled}
-                        errors={this.state.errors}
-                        onChange={this.handleInputChange} />
+                type={field.type} name={field.name} label={field.label}
+                defaultValue={this.state.article[field.name]} disabled={field.disabled}
+                errors={this.state.errors}
+                onChange={this.handleInputChange} />
         );
         return (
             <div className="container">
                 <br />
                 <h3 className="text-center">Create Quotation</h3>
                 <div className="jumbotron">
-                    <form onSubmit={this.handleEditArticleSubmit}>
+                    <form onSubmit={this.handleAddQuoteSubmit}>
                         {inputFields}
                         <div className="form-group">
                             <label>Description</label>
                             <textarea
-                                name="body" style={{height: '200px'}}
+                                name="body" style={{ height: '200px' }}
                                 className="form-control"
                                 onChange={this.handleInputChange}
                                 defaultValue={this.state.article.body} />
@@ -135,7 +152,10 @@ class AddQuotation extends Component {
 
 const mapStateToProps = state => {
     return {
-        article: state.articles.article
+        article: state.articles.article,
+        isAuthenticated: state.users.isAuthenticated,
+        authenticatedUsername: state.users.authenticatedUsername,
+        user_id: state.users.user_id
     };
 };
 

@@ -32,7 +32,12 @@ export const userLoginRequest = (userLoginDetails) => {
                 const token = res.token;
                 delete res.token;
                 localStorage.setItem('jwtToken', token);
-                dispatch({ type: actionTypes.LOGIN_SUCCESSFUL, authorizationToken: token, authenticatedUsername: jwt.decode(token).username });
+                console.log( jwt.decode(token).user_id);
+                dispatch({ type: actionTypes.LOGIN_SUCCESSFUL, 
+                    authorizationToken: token, 
+                    authenticatedUsername: jwt.decode(token).username,
+                    user_id: jwt.decode(token).user_id
+                });
             }
             return res;
         })

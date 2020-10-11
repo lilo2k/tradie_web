@@ -11,6 +11,7 @@
         "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && cd client && npm install && npm run build",
         "client": "cd client && npm start",
         "server": "nodemon app.js",
+        "dev": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
         "test": "echo \"Error: no test specified\" && exit 0"
     },
     "author": "Hemakshi Sachdev",
@@ -18,10 +19,12 @@
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
+        "concurrently": "^5.3.0",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.10.9",
+        "mongoose-sequence": "^5.2.2",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^2.0.0",
         "yarn": "^1.22.10"

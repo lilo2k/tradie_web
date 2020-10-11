@@ -22,7 +22,8 @@ class FullArticle extends Component {
     }
 
     handleQuoteClick() {
-        this.props.history.replace({pathname: '/article/quote/' + this.props.match.params.id});
+        console.log("params:" + this.props.match.params.id)
+        this.props.history.replace({pathname: '/quote/add/' + this.props.match.params.id});
     }
 
     handleDeleteArticleClick() {
@@ -57,7 +58,7 @@ class FullArticle extends Component {
                         click={() => this.handleEditArticleClick()}>Edit</WrappedLink>}
                     {this.props.isAuthenticated && this.props.authenticatedUsername !== this.props.article.author
                     && <WrappedLink
-                        to={"/article/quote/" + this.props.match.params.id}
+                        to={"/quote/add/" + this.props.match.params.id}
                         buttonClasses={['btn', 'btn-info', 'mr-2']}
                         click={() => this.handleQuoteClick()}>Quote</WrappedLink>}
                 </div>
@@ -70,7 +71,8 @@ const mapStateToProps = state => {
     return {
         article: state.articles.article,
         isAuthenticated: state.users.isAuthenticated,
-        authenticatedUsername: state.users.authenticatedUsername
+        authenticatedUsername: state.users.authenticatedUsername,
+        user_id: state.users.user_id
     };
 };
 

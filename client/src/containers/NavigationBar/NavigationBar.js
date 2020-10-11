@@ -5,10 +5,11 @@ import { userLogoutRequest } from '../../store/actions/usersActions';
 
 class NavigationBar extends Component {
     render() {
+        console.log(this.props);
         const userLinks = (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item mr-2 mt-2">
-                    Hello, {this.props.authenticatedUsername}
+                    Hello, {this.props.authenticatedUsername}({this.props.user_id})
                 </li>
                 <li className="nav-item">
                     <a className="btn btn-outline-primary" onClick={this.props.userLogoutRequest}>Logout</a>
@@ -43,7 +44,8 @@ class NavigationBar extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.users.isAuthenticated,
-        authenticatedUsername: state.users.authenticatedUsername
+        authenticatedUsername: state.users.authenticatedUsername,
+        user_id: state.users.user_id
     };
 }
 
