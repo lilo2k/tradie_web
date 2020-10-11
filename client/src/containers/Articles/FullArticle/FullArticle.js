@@ -21,6 +21,10 @@ class FullArticle extends Component {
         this.props.history.replace({pathname: '/article/edit/' + this.props.match.params.id});
     }
 
+    handleQuoteClick() {
+        this.props.history.replace({pathname: '/article/quote/' + this.props.match.params.id});
+    }
+
     handleDeleteArticleClick() {
         alert('We are deleting your article...');
         this.props.deleteArticle(this.props.match.params.id)
@@ -36,9 +40,11 @@ class FullArticle extends Component {
             <div className="container">
                 <br />
                 <div className="jumbotron FullArticle">
-                    <h3 className="text-center">{this.props.article.title}</h3>
-                    <h5 className="text-right">- By {this.props.article.author}</h5>
-                    <p>{this.props.article.body}</p>
+                    <h3 >{this.props.article.title}</h3>
+                    <h5 >Job ID: {this.props.article.job_id}</h5>
+                    <h5 >Customer: {this.props.article.author}</h5>
+                    <h5>Date: {this.props.article.work_date}</h5>
+                    <h5>Time: {this.props.article.work_time}</h5>
                     {this.props.isAuthenticated && this.props.authenticatedUsername === this.props.article.author
                     && <button
                         className="btn btn-danger"
@@ -49,6 +55,11 @@ class FullArticle extends Component {
                         to={"/article/edit/" + this.props.match.params.id}
                         buttonClasses={['btn', 'btn-info', 'mr-2']}
                         click={() => this.handleEditArticleClick()}>Edit</WrappedLink>}
+                    {this.props.isAuthenticated && this.props.authenticatedUsername !== this.props.article.author
+                    && <WrappedLink
+                        to={"/article/quote/" + this.props.match.params.id}
+                        buttonClasses={['btn', 'btn-info', 'mr-2']}
+                        click={() => this.handleQuoteClick()}>Quote</WrappedLink>}
                 </div>
             </div>
         );

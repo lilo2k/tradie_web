@@ -39,6 +39,10 @@ const ArticleSchema = mongoose.Schema({
     work_time: {
         type: String,
         require: false
+    },
+    job_id: {
+        type: String,
+        require: false
     }
 });
 

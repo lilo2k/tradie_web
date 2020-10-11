@@ -36,6 +36,7 @@ class Home extends Component {
         let allArticles = this.props.allArticles || JSON.parse(localStorage.getItem('BasicMERNStackAppAllArticles'));
         allArticles = allArticles.map(article => (
             <Article
+                job_id={article.job_id}
                 key={article._id}
                 id={article._id}
                 title={article.title}
@@ -54,9 +55,14 @@ class Home extends Component {
             }
             myArticles = myArticles.map(article => (
                 <Article
+                    job_id={article.job_id}
                     key={article._id}
                     id={article._id}
-                    title={article.title} />
+                    title={article.title}
+                    work_date={article.work_date}
+                    work_time={article.work_time}
+                    job_creator={article.author}
+                />
             ));
         }
 
@@ -81,6 +87,7 @@ class Home extends Component {
                         <Table selectable celled>
                             <Table.Header>
                                 <Table.Row>
+                                    <Table.HeaderCell>Job ID</Table.HeaderCell>
                                     <Table.HeaderCell>Description</Table.HeaderCell>
                                     <Table.HeaderCell>Date</Table.HeaderCell>
                                     <Table.HeaderCell>Time</Table.HeaderCell>
@@ -88,7 +95,7 @@ class Home extends Component {
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                    {this.state.showMyArticles ? myArticles : allArticles}
+                                {this.state.showMyArticles ? myArticles : allArticles}
                             </Table.Body>
                         </Table>
                     </section>

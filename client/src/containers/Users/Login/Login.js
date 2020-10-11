@@ -88,7 +88,8 @@ class Login extends Component {
                 <h3 className="text-center">Login</h3>
                 <Message info>
                     <Message.Header>ID/PASSWORD</Message.Header>
-                    <p>abcd/abcd</p>
+                    <p>user1/user1</p>
+                    <p>user2/user2</p>
                 </Message>
                 <div className="jumbotron">
                     {this.state.errors.invalidCredentials && <p className="text-danger">{this.state.errors.invalidCredentials}</p>}

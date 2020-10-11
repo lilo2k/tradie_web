@@ -7,6 +7,7 @@ import Login from './containers/Users/Login/Login';
 import FullArticle from './containers/Articles/FullArticle/FullArticle';
 import AddArticle from './containers/Articles/AddArticle/AddArticle';
 import EditArticle from './containers/Articles/EditArticle/EditArticle';
+import AddQuotation from './containers/Quotation/AddQuotation/AddQuotation';
 import NavigationBar from './containers/NavigationBar/NavigationBar';
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path="/article/add" component={AddArticle} />
                     <Route path="/article/edit/:id" component={EditArticle} />
+                    <Route path="/article/quote/:id" component={AddQuotation} />
                     <Route path="/articles/:id" component={FullArticle} />
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={Signup} />
