@@ -7,8 +7,8 @@ import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
 
 const FIELDS = [
-    { name: 'job_id', type: 'text', label: 'Job ID', disabled: 'disabled' },
-    { name: 'title', type: 'text', label: 'Job', disabled: 'disabled' },
+    { name: '_id', type: 'text', label: 'Job ID', disabled: 'disabled' },
+    { name: 'title', type: 'text', label: 'Job', },
     { name: 'author', type: 'text', label: 'Customer', disabled: 'disabled' },
     { name: 'work_date', type: 'text', label: 'Date', disabled: 'disabled' },
     { name: 'work_time', type: 'text', label: 'Time', disabled: 'disabled' },

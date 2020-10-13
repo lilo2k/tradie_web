@@ -10,15 +10,15 @@ let router = express.Router();
 const checkForErrors = ({ job_id, hours, price }) => {
     let errors = {};
     let isValid = false;
-    if (job_id === '') {
-        errors = { ...errors, title: 'This field is required' }
-    }
-    if (hours === '') {
-        errors = { ...errors, author: 'This field is required' }
-    }
-    if (price === '') {
-        errors = { ...errors, body: 'This field is required' }
-    }
+    // if (job_id === '') {
+    //     errors = { ...errors, title: 'This field is required' }
+    // }
+    // if (hours === '') {
+    //     errors = { ...errors, author: 'This field is required' }
+    // }
+    // if (price === '') {
+    //     errors = { ...errors, body: 'This field is required' }
+    // }
 
     if (Object.keys(errors).length > 0) {
         return { isValid, errors };
@@ -62,18 +62,23 @@ router.get('/byJobId/:job_id', (req, res, next) => {
     // sorting
     query = query.sort({ _id: 'descending' });
 
-    query.then((data) => res.json({data}))
+    query.then((data) => {
+        console.log(data);
+        res.json({data});
+        // console.log(res.json({data}));
+    }
+        )
         .catch(next);
 });
 
 router.post('/add', isAuthenticated, (req, res) => {
     // job_id, wage, price, workers, description, hours
-    const job_id = req.body.job_id || '';
+    const job_id = req.body._id || '';
     const workers = req.body.workers || '';
     const wage = req.body.wage || '';
     const hours = req.body.hours || '';
     const price = req.body.price || '';
-    const description = req.body.description || '';
+    const description = req.body.body || '';
     const trader_user_id = req.body.trader_user_id || '';
 
     const { isValid, errors } = checkForErrors({ job_id, hours, price });

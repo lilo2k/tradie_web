@@ -16,7 +16,7 @@ const Article = (props) => {
         <Table.Row onClick={() => {
             handleClick(props.id);
           }}>
-            <Table.Cell>{props.job_id}</Table.Cell>
+            <Table.Cell>{props.id}</Table.Cell>
             <Table.Cell>
                 <Link to={'/articles/' + props.id}>
                     {props.title}
