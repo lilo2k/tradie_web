@@ -44,6 +44,28 @@ const isAuthenticated = (req, res, next) => {
     }
 }
 
+router.get('/byJobId/:job_id', (req, res, next) => {
+    // Quotation.findById(req.params.job_id, (err, article) => {
+    //     if (err) throw err;
+    //     res.json({ article });
+    // })
+
+    // seerSearchJson(title, author, yearSelection, fromYear, toYear, method, claims)
+    //     .then((data) => res.json(data))
+    //     .catch(next);
+
+    let query = Quotation.find(
+        {
+            job_id: req.params.job_id,
+        }
+    );
+    // sorting
+    query = query.sort({ _id: 'descending' });
+
+    query.then((data) => res.json({data}))
+        .catch(next);
+});
+
 router.post('/add', isAuthenticated, (req, res) => {
     // job_id, wage, price, workers, description, hours
     const job_id = req.body.job_id || '';
@@ -54,15 +76,15 @@ router.post('/add', isAuthenticated, (req, res) => {
     const description = req.body.description || '';
     const trader_user_id = req.body.trader_user_id || '';
 
-    const { isValid, errors } = checkForErrors({ job_id, hours, price});
+    const { isValid, errors } = checkForErrors({ job_id, hours, price });
 
     if (isValid) {
         const newQuote = new Quotation({
-            job_id : job_id,
+            job_id: job_id,
             workers: workers,
-            wage : wage,
-            hours : hours,
-            price : price,
+            wage: wage,
+            hours: hours,
+            price: price,
             description: description,
             trader_user_id: trader_user_id
         });
@@ -70,7 +92,7 @@ router.post('/add', isAuthenticated, (req, res) => {
         newQuote.save((err) => {
             if (err) throw err;
             else {
-                res.json({ success: 'success'});
+                res.json({ success: 'success' });
             }
         });
     } else {

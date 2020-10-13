@@ -1,0 +1,34 @@
+@host = https://auth.tradies.live
+@host2 = https://app.tradies.live/
+
+POST {{host}}/tokens HTTP/1.1
+Authorization: Basic bmVic29uOjEyMzQ1Njc4OQ==
+User-Agent: Tradies/1.0
+Content-Type: application/json
+
+{
+    "expires_in":3600,
+    "token_type":"jwt"
+}
+
+### 
+POST {{host2}}/login HTTP/1.1
+Authorization: Basic bmVic29uOjEyMzQ1Njc4OQ==
+User-Agent: Tradies/1.0
+Content-Type: application/json
+
+{
+    "expires_in":3600,
+    "token_type":"jwt"
+}
+
+###
+POST {{host}}/tokens HTTP/1.1
+Authorization: Basic YWJjZDphYmNk
+User-Agent: Tradies/1.0
+Content-Type: application/json
+
+{
+    "expires_in":3600,
+    "token_type":"jwt"
+}

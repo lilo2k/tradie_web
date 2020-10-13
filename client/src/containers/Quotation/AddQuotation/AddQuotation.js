@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { saveArticle } from '../../../store/actions/articlesActions';
-import { saveQuotation } from '../../../store/actions/quotationActions';
+import { saveQuotation } from '../../../store/actions/articlesActions';
+// import {  } from '../../../store/actions/quotationActions';
 import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
-import jwt from 'jsonwebtoken';
 
 const FIELDS = [
     { name: 'job_id', type: 'text', label: 'Job ID', disabled: 'disabled' },
@@ -17,7 +16,6 @@ const FIELDS = [
     { name: 'wage', type: 'text', label: 'Hourly wage' },
     { name: 'hours', type: 'text', label: 'Work hours' },
     { name: 'price', type: 'text', label: 'Total Price' },
-    // {name: 'trader_user_id', type: 'hidden', value: ''},
 ];
 
 class AddQuotation extends Component {

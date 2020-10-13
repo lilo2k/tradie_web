@@ -8,10 +8,11 @@ if (process.env.CON == undefined) {
 }
 
 const connection = process.env.CON;
+const jwtkey = process.env.jwtkey;
 
 module.exports = {
     // jwtSecret: JWTSECRET,
-    jwtSecret: 'somesecretkeyforjwt',
+    jwtSecret: jwtkey,
     // mongodburi: 'mongodb://' + DB_USERNAME + ':' + DB_PASSWORD + '@ds233763.mlab.com:33763/basic-mern-stack-app'
     mongodburi: connection
 };

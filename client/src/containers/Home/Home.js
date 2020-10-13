@@ -115,6 +115,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        // this.props   ==> dispatch to actions 
         initArticles: () => dispatch(getAllArticles()),
         getMyArticles: () => dispatch(getMyArticles())
     };

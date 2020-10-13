@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getArticle, deleteArticle } from '../../../store/actions/articlesActions';
+import { getArticle, deleteArticle, getQuotations } from '../../../store/actions/articlesActions';
 import WrappedLink from '../../../components/WrappedLink/WrappedLink';
 import './FullArticle.css'
+import ListQuotation from '../../Quotation/ListQuotations/ListQuotation';
 
 class FullArticle extends Component {
     componentDidMount() {
@@ -13,6 +14,7 @@ class FullArticle extends Component {
         if (this.props.match.params.id) {
             if (!this.props.article || (this.props.article._id !== + this.props.match.params.id)) {
                 this.props.getArticle(this.props.match.params.id);
+                this.props.getQuotations(this.props.article.job_id);
             }
         }
     }
@@ -62,6 +64,9 @@ class FullArticle extends Component {
                         buttonClasses={['btn', 'btn-info', 'mr-2']}
                         click={() => this.handleQuoteClick()}>Quote</WrappedLink>}
                 </div>
+                <div>
+                    <ListQuotation job_id={this.props.article.job_id}/>
+                </div>
             </div>
         );
     }
@@ -72,14 +77,16 @@ const mapStateToProps = state => {
         article: state.articles.article,
         isAuthenticated: state.users.isAuthenticated,
         authenticatedUsername: state.users.authenticatedUsername,
-        user_id: state.users.user_id
+        user_id: state.users.user_id,
+        quotations: state.articles.quotations,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getArticle: (articleId) => dispatch(getArticle(articleId)),
-        deleteArticle: (articleId) => dispatch(deleteArticle(articleId))
+        deleteArticle: (articleId) => dispatch(deleteArticle(articleId)),
+        getQuotations: (job_id) => dispatch(getQuotations(job_id))
     };
 };
 

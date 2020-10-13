@@ -1,0 +1,24 @@
+
+@host = http://localhost:5000
+
+### add quotation - as trader, (user_id:1)
+POST {{host}}/api/quotations/add HTTP/1.1
+content-type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmODIxNTQ0ZDA2YzQ1NDA0OGMyNmU2ZiIsInVzZXJuYW1lIjoidXNlcjEiLCJ1c2VyX2lkIjoxLCJpYXQiOjE2MDI1MDAwODd9.nNyntTgjnSTDNAE6KuDqsKYA9JVzyKAImlTVRWiVuM4
+
+{
+    "job_id": "0003",
+    "workers": 2,
+    "wage": 25,
+    "hours": 2,
+    "price": 100,
+    "description": "description",
+    "trader_user_id": 1
+}
+
+### 
+GET {{host}}/api/quotations/byJobId/0003 HTTP/1.1
+
+###
+GET {{host}}/api/articles HTTP/1.1

@@ -79,3 +79,24 @@ export const deleteArticle = (articleId) => {
         .then(res => res.json())
     };
 }
+
+export const saveQuotation = (quotationData) => {
+    console.log("add quotation");
+    // console.log("articleid:" + articleId);
+    console.log(quotationData);
+    return dispatch => {
+        return fetch('/api/quotations/add', options(quotationData))
+        .then(res => res.json())
+    }
+}
+
+export const getQuotations = (job_id) => {
+    return dispatch => {
+        fetch('/api/quotations/byJobId/' + job_id)
+        .then(res => res.json())
+        .then(res => {
+            console.log(res.data)
+            dispatch({ type: actionTypes.GOT_JOB_QUOTATIONS, quotations: res.data })
+        })
+    };
+};

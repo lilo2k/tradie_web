@@ -4,6 +4,7 @@ const initialState = {
     articles: [],
     article: {},
     myArticles: {},
+    quotations: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,6 +24,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 article: action.article
+            };
+        case actionTypes.GOT_JOB_QUOTATIONS:
+            return {
+                ...state,
+                quotations: action.quotations
             };
         default:
             return state;
