@@ -17,6 +17,15 @@ class Login extends Component {
         errors: {}
     }
 
+ async   componentDidMount() {
+        try {
+            await fetch('https://cors-anywhere.herokuapp.com/https://tradies.live/api/users/login');
+          } catch(err) {
+              console.log(err);
+            // alert(err); // Failed to fetch
+          }
+    }
+
     handleValidation = (field, value) => {
         let error = {};
         if (value === '') {
@@ -90,6 +99,7 @@ class Login extends Component {
                     <Message.Header>ID/PASSWORD</Message.Header>
                     <p>user1/user1 for a trader</p>
                     <p>user2/user2 for a customer</p>
+                    <p>nebson/123456789 for the orchestration</p>
                 </Message>
                 <div className="jumbotron">
                     {this.state.errors.invalidCredentials && <p className="text-danger">{this.state.errors.invalidCredentials}</p>}
