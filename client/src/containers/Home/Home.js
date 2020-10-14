@@ -5,10 +5,41 @@ import Article from '../../components/Article/Article';
 import WrappedLink from '../../components/WrappedLink/WrappedLink';
 import './Home.css';
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
+import * as Constants from '../../Constants'
 
 class Home extends Component {
     state = {
-        showMyArticles: false
+        showMyArticles: false,
+        jobs: [],
+        res: ''
+    }
+
+    getAllJobs() {
+        let apiURL = Constants.URL + 'getjobs';
+        console.log(apiURL)
+        fetch(apiURL)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                console.log(JSON.stringify(res.jobs));
+                if (res.jobs) { 
+                    this.setState(
+                        { jobs: JSON.stringify(res.jobs) }
+                    );
+                }
+            })
+
+        //     axios
+        //   .get(Constants.URL + "/search/filter")
+        //   .then((res) => {
+        //     if (res.data) {
+        //       this.setState(
+        //         {jobs: data}
+        //       );
+        //       // this.setState({ title: "", author: "", fromYear: year-10, toYear:currentYear, method: "", claims: [] });
+        //     }
+        //   })
+        //   .catch((err) => console.log(err));
     }
 
     componentWillMount() {
@@ -22,6 +53,7 @@ class Home extends Component {
         if (this.props.isAuthenticated) {
             this.props.getMyArticles();
         }
+        this.getAllJobs();
     }
 
     toggleShowMyArticles = () => {
@@ -99,6 +131,8 @@ class Home extends Component {
                             </Table.Body>
                         </Table>
                     </section>
+                    <div>
+                    </div>
                 </div>
             </div>
         );

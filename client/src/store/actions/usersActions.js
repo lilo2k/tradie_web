@@ -1,4 +1,6 @@
 import * as actionTypes from './actionTypes'
+import * as Constants from '../../Constants'
+
 import jwt from 'jsonwebtoken';
 let base64 = require('base-64');
 
@@ -50,7 +52,7 @@ export const userLoginRequest_old = (userLoginDetails) => {
 export const userLoginRequest = (userLoginDetails) => {
     return dispatch => {
 
-        let url = 'https://cors-anywhere.herokuapp.com/https://tradies.live/login';
+        let url = Constants.URL + 'login';
         let username = userLoginDetails.username;
         let password = userLoginDetails.password;
 
@@ -77,12 +79,14 @@ export const userLoginRequest = (userLoginDetails) => {
                     const token = res.token;
                     delete res.token;
                     localStorage.setItem('jwtToken', token);
-                    console.log(jwt.decode(token).userid);
+                    let userid = jwt.decode(token).userid || ''; 
+                    let username = jwt.decode(token).username || '';
+                    console.log(userid);
                     dispatch({
                         type: actionTypes.LOGIN_SUCCESSFUL,
                         authorizationToken: token,
-                        authenticatedUsername: jwt.decode(token).userid,
-                        user_id: jwt.decode(token).userid
+                        authenticatedUsername: username,
+                        user_id: userid
                     });
                 // }
                 return res;
