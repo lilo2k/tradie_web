@@ -36,17 +36,17 @@ class JobDetail extends Component {
                     }
                 })
 
-            // let apiURLQ = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
-            let apiURLQ = Constants.URL + '/billing/quotation/';
+            let apiURLQ = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
+            // let apiURLQ = Constants.URL + '/billing/quotation/';
             console.log(apiURLQ)
             fetch(apiURLQ)
                 .then(res => res.json())
                 .then(res => {
                     console.log(res);
-                    console.log(JSON.stringify(res.Quotations));
-                    if (res.Quotations) {
+                    console.log(JSON.stringify(res.quotations));
+                    if (res.quotations) {
                         this.setState(
-                            { quotations: res.Quotations }
+                            { quotations: res.quotations }
                         );
                     }
                 })

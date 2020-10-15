@@ -5,6 +5,7 @@ import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 import * as Constants from '../../Constants'
 import { Link } from 'react-router-dom';
 import { useHistory, useParams } from "react-router-dom";
+import WrappedLink from '../../components/WrappedLink/WrappedLink';
 
 class Home extends Component {
     state = {
@@ -55,11 +56,20 @@ class Home extends Component {
     render() {
         let jobs = this.state.jobs;
 
+        const showArticlesLink = <WrappedLink
+            to={this.state.showMyArticles ? "/" : "/article/myarticles"}
+            buttonClasses={['btn', 'btn-outline-info', 'mr-3', 'MyArticlesButton']}
+            onClick={this.toggleShowMyArticles}>
+            {this.state.showMyArticles ? 'All Jobs' : 'My Jobs'}
+        </WrappedLink>
+
         return (
             <div className="container">
                 <br />
                 <div className="Header">
                     <h1 style={{ display: 'inline-block' }}>Job list</h1>
+                    <WrappedLink to="/article/add" buttonClasses={['btn', 'btn-primary', 'mr-3', 'AddArticleButton']}>Add Job</WrappedLink>
+                    {/* {this.props.isAuthenticated && showArticlesLink} */}
                 </div>
                 <br />
                 <div>
