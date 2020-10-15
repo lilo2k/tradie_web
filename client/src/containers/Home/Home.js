@@ -1,30 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllArticles, getMyArticles } from '../../store/actions/articlesActions';
-import Article from '../../components/Article/Article';
-import WrappedLink from '../../components/WrappedLink/WrappedLink';
 import './Home.css';
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 import * as Constants from '../../Constants'
+import { Link } from 'react-router-dom';
+import { useHistory, useParams } from "react-router-dom";
 
 class Home extends Component {
     state = {
-        showMyArticles: false,
         jobs: [],
         res: ''
     }
 
     getAllJobs() {
-        let apiURL = Constants.URL + 'getjobs';
+        let apiURL = Constants.URL + 'jobs';
         console.log(apiURL)
         fetch(apiURL)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
                 console.log(JSON.stringify(res.jobs));
-                if (res.jobs) { 
+                if (res.jobs) {
                     this.setState(
-                        { jobs: JSON.stringify(res.jobs) }
+                        { jobs: res.jobs }
                     );
                 }
             })
@@ -43,75 +41,25 @@ class Home extends Component {
     }
 
     componentWillMount() {
-        if (this.props.location.pathname === '/article/myarticles' && !this.state.showMyArticles) {
-            this.toggleShowMyArticles();
-        }
     }
 
     componentDidMount() {
-        this.props.initArticles();
-        if (this.props.isAuthenticated) {
-            this.props.getMyArticles();
-        }
         this.getAllJobs();
     }
 
-    toggleShowMyArticles = () => {
-        this.setState((prevState) => {
-            return {
-                showMyArticles: !prevState.showMyArticles
-            }
-        });
-    }
+    handleClick = itemId => {
+        let history = useHistory();
+        history.push('/job/' + itemId);
+    };
 
     render() {
-        let allArticles = this.props.allArticles || JSON.parse(localStorage.getItem('BasicMERNStackAppAllArticles'));
-        allArticles = allArticles.map(article => (
-            <Article
-                job_id={article.job_id}
-                key={article._id}
-                id={article._id}
-                title={article.title}
-                work_date={article.work_date}
-                work_time={article.work_time}
-                job_creator={article.author}
-            />
-        ));
-
-        let myArticles = [];
-        if (this.props.isAuthenticated && this.state.showMyArticles) {
-            if (this.props.myArticles) {
-                myArticles = [...this.props.myArticles];
-            } else {
-                myArticles = [...JSON.parse(localStorage.getItem('BasicMERNStackAppMyArticles'))]
-            }
-            myArticles = myArticles.map(article => (
-                <Article
-                    job_id={article.job_id}
-                    key={article._id}
-                    id={article._id}
-                    title={article.title}
-                    work_date={article.work_date}
-                    work_time={article.work_time}
-                    job_creator={article.author}
-                />
-            ));
-        }
-
-        const showArticlesLink = <WrappedLink
-            to={this.state.showMyArticles ? "/" : "/article/myarticles"}
-            buttonClasses={['btn', 'btn-outline-info', 'mr-3', 'MyArticlesButton']}
-            onClick={this.toggleShowMyArticles}>
-            {this.state.showMyArticles ? 'All Jobs' : 'My Jobs'}
-        </WrappedLink>
+        let jobs = this.state.jobs;
 
         return (
             <div className="container">
                 <br />
                 <div className="Header">
                     <h1 style={{ display: 'inline-block' }}>Job list</h1>
-                    <WrappedLink to="/article/add" buttonClasses={['btn', 'btn-primary', 'mr-3', 'AddArticleButton']}>Add Job</WrappedLink>
-                    {this.props.isAuthenticated && showArticlesLink}
                 </div>
                 <br />
                 <div>
@@ -124,10 +72,51 @@ class Home extends Component {
                                     <Table.HeaderCell>Date</Table.HeaderCell>
                                     <Table.HeaderCell>Time</Table.HeaderCell>
                                     <Table.HeaderCell>Creator</Table.HeaderCell>
+                                    <Table.HeaderCell>State</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                {this.state.showMyArticles ? myArticles : allArticles}
+                                {
+                                    !jobs || jobs.length <= 0 ?
+                                        (
+                                            <Table.Row>
+                                                <Table.Cell colSpan='6'>
+                                                    No job found
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        )
+                                        :
+                                        (
+                                            jobs.map(job => {
+                                                // data.map(({_id, title, author, year, method, claims, evidence}) => {
+                                                // data.map(job => {
+                                                return (
+                                                    <Table.Row key={job.job_id}>
+                                                        <Table.Cell>
+                                                            {job.job_id}
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            <Link to={'/job/' + job.job_id}>
+                                                                {job.description}
+                                                            </Link>
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            {job.date}
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            {job.time}
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            {job.job_creator}
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            {job.state}
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                )
+                                            })
+                                        )
+                                }
                             </Table.Body>
                         </Table>
                     </section>
@@ -141,8 +130,6 @@ class Home extends Component {
 
 const mapStateToProps = state => {
     return {
-        allArticles: state.articles.articles,
-        myArticles: state.articles.myArticles,
         isAuthenticated: state.users.isAuthenticated
     };
 };
@@ -150,8 +137,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         // this.props   ==> dispatch to actions 
-        initArticles: () => dispatch(getAllArticles()),
-        getMyArticles: () => dispatch(getMyArticles())
     };
 };
 

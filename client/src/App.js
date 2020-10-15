@@ -4,11 +4,12 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './containers/Home/Home';
 import Signup from './containers/Users/Signup/Signup';
 import Login from './containers/Users/Login/Login';
-import FullArticle from './containers/Articles/FullArticle/FullArticle';
-import AddArticle from './containers/Articles/AddArticle/AddArticle';
-import EditArticle from './containers/Articles/EditArticle/EditArticle';
+import JobDetail from './containers/Job/JobDetail/JobDetail';
+import AddJob from './containers/Job/AddJob/AddJob';
+import EditJob from './containers/Job/EditJob/EditJob';
 import AddQuotation from './containers/Quotation/AddQuotation/AddQuotation';
 import NavigationBar from './containers/NavigationBar/NavigationBar';
+import FullArticle from './containers/Articles/FullArticle/FullArticle'
 
 class App extends Component {
     render() {
@@ -16,10 +17,10 @@ class App extends Component {
             <div className="container-fluid">
                 <NavigationBar />
                 <Switch>
-                    <Route exact path="/article/add" component={AddArticle} />
-                    <Route path="/article/edit/:id" component={EditArticle} />
+                    <Route exact path="/job/add" component={AddJob} />
+                    <Route path="/job/edit/:id" component={EditJob} />
                     <Route path="/quote/add/:id" component={AddQuotation} />
-                    <Route path="/articles/:id" component={FullArticle} />
+                    <Route path="/job/:id" component={JobDetail} />
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/" component={Home} />

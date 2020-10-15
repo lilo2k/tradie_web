@@ -4,7 +4,8 @@ import { Redirect } from 'react-router-dom';
 import { userLoginRequest } from '../../../store/actions/usersActions';
 import InputField from '../../../components/InputField/InputField';
 
-import { Message } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react';
+import * as Constants from '../../../Constants';
 
 const FIELDS = [
     { name: 'username', type: 'text', label: 'Username' },
@@ -15,15 +16,6 @@ class Login extends Component {
     state = {
         userCredentials: {},
         errors: {}
-    }
-
- async   componentDidMount() {
-        try {
-            await fetch('https://cors-anywhere.herokuapp.com/https://tradies.live/api/users/login');
-          } catch(err) {
-              console.log(err);
-            // alert(err); // Failed to fetch
-          }
     }
 
     handleValidation = (field, value) => {
