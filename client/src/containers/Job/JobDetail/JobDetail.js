@@ -71,6 +71,12 @@ class JobDetail extends Component {
     handleEditArticleClick() {
         this.props.history.replace({ pathname: '/job/edit/' + this.props.match.params.id });
     }
+    handleInvoiceClick(e) {
+        e.preventDefault();
+        console.log(e);
+        console.log(e.target.value);
+        alert("hello"+e.target.value);
+    }
 
     handleAssignClick(e) {
         e.preventDefault();
@@ -78,7 +84,7 @@ class JobDetail extends Component {
         console.log(e);
         console.log(e.target.value);
         let qid = e.target.value;
-        console.log(JSON.stringify({job_assignee: qid}))
+        console.log(JSON.stringify({ job_assignee: qid }))
 
         let apiURL = Constants.URL + 'jobs/?jid=' + this.props.match.params.id;
         fetch(apiURL, {
@@ -88,7 +94,7 @@ class JobDetail extends Component {
                 'Accept': 'application/json'
             },
             method: 'PUT',
-            body: JSON.stringify({job_assignee: qid})
+            body: JSON.stringify({ job_assignee: qid })
         })
             .then(res => res.json())
             .then(res => {
@@ -237,13 +243,13 @@ class JobDetail extends Component {
                 <br />
                 <div className="container">
                     {this.state.jobs.job_assignee !== '-' &&
-                    this.state.quotations &&
-                    this.state.quotations[0] &&
-                    this.props.user_id == this.state.quotations[0].tradieid &&
-                        <WrappedLink
-                            to={"/job/invoice/" + this.state.jobs.job_id}
-                            buttonClasses={['btn', 'btn-info', 'mr-2']}
-                            click={() => this.handleInvoiceClick()}>Invoice</WrappedLink>}
+                        this.state.quotations &&
+                        this.state.quotations[0] &&
+                        this.props.user_id == this.state.quotations[0].tradieid && 
+                        <button value={this.state.jobs.job_id} onClick={(e) => this.handleInvoiceClick(e)} className={"btn btn-info mr-2 WrappedButton"}>
+                            Invoice
+                        </button>
+                    }
                 </div>
             </div>
         );
