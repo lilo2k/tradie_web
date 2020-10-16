@@ -1,31 +1,40 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { submitNewArticle } from '../../../store/actions/articlesActions';
+import { submitNewJob } from '../../../store/actions/jobsActions';
 import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
 
 const FIELDS = [
-    {name: 'title', type: 'text', label: 'Title'},
-    {name: 'author', type: 'text', label: 'Customer', disabled: 'disabled'}
+    { name: 'description', type: 'text', label: 'Description' },
+    { name: 'creator_id', type: 'text', label: 'Customer ID', disabled: 'disabled' },
+    { name: 'date', type: 'text', label: 'Date', placeholder:"dd/mm/yyyy"},
+    { name: 'time', type: 'text', label: 'Time', placeholder:"hh:mm-hh:mm" }
 ];
 
 class AddJob extends Component {
     state = {
-        article: {},
+        job: {},
         errors: {}
     };
 
     componentWillMount() {
-        if (localStorage.getItem('AddArticlePage') !== null ) {
-            const { article, errors } = JSON.parse(localStorage.getItem('AddArticlePage'));
+        if (localStorage.getItem('AddJobPage') !== null) {
+            const { job, errors } = JSON.parse(localStorage.getItem('AddJobPage'));
             this.setState(prevState => {
                 return {
                     ...prevState,
-                    article: {...article},
-                    errors: {...errors}
+                    job: { ...job },
+                    errors: { ...errors }
                 };
             });
+        }
+        else {
+            this.setState({
+                job: {
+                    creator_id: this.props.user_id
+                }
+            })
         }
     }
 
@@ -48,40 +57,40 @@ class AddJob extends Component {
         this.setState((prevState) => {
             return {
                 ...prevState,
-                article: {
-                    ...prevState.article,
+                job: {
+                    ...prevState.job,
                     [field]: value
                 },
-                errors: {...errors}
+                errors: { ...errors }
             };
-        }, () => localStorage.setItem('AddArticlePage', JSON.stringify(this.state)));
+        }, () => localStorage.setItem('AddJobPage', JSON.stringify(this.state)));
     }
 
     componentWillUnmount() {
-        localStorage.removeItem('AddArticlePage');
+        localStorage.removeItem('AddJobPage');
     }
 
-    handleNewArticleSubmit = (e) => {
+    handleNewJobSubmit = (e) => {
         e.preventDefault();
-        let errors = {...this.state.errors};
+        let errors = { ...this.state.errors };
         const formValuesValid = Object.keys(errors).filter(field => errors[field] !== "").length === 0 ? true : false;
-        if ( !formValuesValid ) {
+        if (!formValuesValid) {
             return;
         } else {
-            this.props.submitNewArticle({...this.state.article, author: this.props.authenticatedUsername})
-            .then(res => {
-                if (res.errors) {
-                    this.setState(prevState => {
-                        return {
-                            ...prevState,
-                            article: {...prevState.article},
-                            errors: {...prevState.errors, ...res.errors}
-                        };
-                    });
-                } else {
-                    this.props.history.push('/');
-                }
-            })
+            this.props.submitNewJob(this.state.job)
+                .then(res => {
+                    if (res.errors) {
+                        this.setState(prevState => {
+                            return {
+                                ...prevState,
+                                job: { ...prevState.job },
+                                errors: { ...prevState.errors, ...res.errors }
+                            };
+                        });
+                    } else {
+                        this.props.history.push('/');
+                    }
+                })
         }
     }
 
@@ -89,13 +98,22 @@ class AddJob extends Component {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         }
+        const inputFields = FIELDS.map(field =>
+            <InputField key={field.name}
+                type={field.type} name={field.name} label={field.label}
+                disabled={field.disabled}
+                errors={this.state.errors}
+                defaultValue={this.state.job[field.name]}
+                placeholder={field.placeholder}
+                onChange={this.handleInputChange} />
+        );
         return (
             <div className="container">
                 <br />
                 <h3 className="text-center">Add Job</h3>
                 <div className="jumbotron">
-                    <form onSubmit={this.handleNewArticleSubmit}>
-                        <InputField key={FIELDS[0].name}
+                    <form onSubmit={this.handleNewJobSubmit}>
+                        {/* <InputField key={FIELDS[0].name}
                             type={FIELDS[0].type} name={FIELDS[0].name} label={FIELDS[0].label}
                             defaultValue={this.state.article.title}
                             errors={this.state.errors}
@@ -104,16 +122,17 @@ class AddJob extends Component {
                             type={FIELDS[1].type} name={FIELDS[1].name} label={FIELDS[1].label}
                             defaultValue={this.props.authenticatedUsername} disabled={FIELDS[1].disabled}
                             errors={this.state.errors}
-                            onChange={this.handleInputChange} />
-                        <div className="form-group">
+                            onChange={this.handleInputChange} /> */}
+                        {/* <div className="form-group">
                             <label>Body</label>
                             <textarea
-                                name="body" style={{height: '200px'}}
+                                name="body" style={{ height: '200px' }}
                                 className="form-control" placeholder="Your article's contents goes here... Good luck!"
                                 onChange={this.handleInputChange}
                                 defaultValue={this.state.article.body} />
                             {this.state.errors.body !== '' && <ErrorMsg msg={this.state.errors.body} />}
-                        </div>
+                        </div> */}
+                        {inputFields}
                         <button className="btn btn-success">Submit</button>
                     </form>
                 </div>
@@ -132,7 +151,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        submitNewArticle: (articleData) => dispatch(submitNewArticle(articleData))
+        submitNewJob: (jobData) => dispatch(submitNewJob(jobData))
     };
 };
 

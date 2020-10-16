@@ -28,7 +28,6 @@ class Home extends Component {
                     );
                 }
             })
-
         //     axios
         //   .get(Constants.URL + "/search/filter")
         //   .then((res) => {
@@ -69,7 +68,7 @@ class Home extends Component {
                 <br />
                 <div className="Header">
                     <h1 style={{ display: 'inline-block' }}>Job list</h1>
-                    <WrappedLink to="/article/add" buttonClasses={['btn', 'btn-primary', 'mr-3', 'AddArticleButton']}>Create Job</WrappedLink>
+                    <WrappedLink to="/job/add" buttonClasses={['btn', 'btn-primary', 'mr-3', 'AddArticleButton']}>Create Job</WrappedLink>
                     {/* {this.props.isAuthenticated && showArticlesLink} */}
                 </div>
                 <br />
