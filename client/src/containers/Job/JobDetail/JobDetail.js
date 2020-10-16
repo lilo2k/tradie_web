@@ -10,8 +10,7 @@ import './JobDetail.css'
 class JobDetail extends Component {
     state = {
         jobs: {},
-        quotations: [],
-        selectedQuotation: {}
+        quotations: []
     }
 
     componentDidMount() {
@@ -48,6 +47,7 @@ class JobDetail extends Component {
                         .then(res => {
                             console.log(res);
                             console.log(JSON.stringify(res.quotations));
+                            console.log(JSON.stringify(res.quotations[0].tradieid));
                             if (res.quotations) {
                                 this.setState(
                                     { quotations: res.quotations }
@@ -72,16 +72,40 @@ class JobDetail extends Component {
         this.props.history.replace({ pathname: '/job/edit/' + this.props.match.params.id });
     }
 
-    handleAssignClick(item) {
-        this.setState(prevState => {
-            return {
-                ...prevState,
-                jobs: {
-                    ...prevState.jobs,
-                    job_assignee: item
+    handleAssignClick(e) {
+        e.preventDefault();
+        // alert("hello");
+        console.log(e);
+        console.log(e.target.value);
+        let qid = e.target.value;
+        console.log(JSON.stringify({job_assignee: qid}))
+
+        let apiURL = Constants.URL + 'jobs/?jid=' + this.props.match.params.id;
+        fetch(apiURL, {
+            headers: {
+                // 'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify({job_assignee: qid})
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                if (res.status === "ok") {
+
+                    this.setState(prevState => {
+                        return {
+                            ...prevState,
+                            jobs: {
+                                ...prevState.jobs,
+                                job_assignee: qid
+                            }
+                        };
+                    });
                 }
-            };
-        });
+            })
     }
 
 
@@ -98,6 +122,10 @@ class JobDetail extends Component {
                     this.props.history.push('/');
                 }
             })
+    }
+
+    sayHello() {
+        alert('Hello!');
     }
 
     render() {
@@ -177,13 +205,23 @@ class JobDetail extends Component {
                                                 {quotation.tradieid}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {this.props.isAuthenticated && this.state.jobs.job_assignee === '-' && this.props.user_id !== quotation.tradieid
-                                                    && <WrappedLink
-                                                        // to={"/job/assign/" + quotation.qid}
+                                                {/*  */}
+                                                {this.props.isAuthenticated && this.state.jobs.job_assignee === "-" && this.props.user_id == this.state.jobs.job_creator
+                                                    &&
+                                                    <button value={quotation.qid} onClick={(e) => this.handleAssignClick(e)} className={"btn btn-info mr-2"}>
+                                                        Assign
+                                                    </button>}
+                                                {/* <WrappedLink
+                                                        to={"/job/assign/" + this.props.match.params.id}
                                                         buttonClasses={['btn', 'btn-info', 'mr-2']}
-                                                        click={() => this.handleAssignClick(quotation.qid)}>Assign</WrappedLink>}
+                                                        click={(e) => this.handleAssignClick(quotation.qid, e)}>Assign</WrappedLink>} */}
+                                                {/* <button disabled={false}
+                                                        className="btn "
+                                                        onClick={(e) => this.handleAssignClick(quotation.qid, e)}
+                                                        style={{ float: 'right', padding: '6px 12px' }}
+                                                    >Assign</button>} */}
                                                 {this.state.jobs.job_assignee !== '-' && this.state.jobs.job_assignee == quotation.qid
-                                                    && <button disabled="false"
+                                                    && <button disabled={false}
                                                         className="btn btn-danger"
                                                         style={{ float: 'right', padding: '6px 12px' }}
                                                     >Assigned</button>}
@@ -198,8 +236,11 @@ class JobDetail extends Component {
                 </div>
                 <br />
                 <div className="container">
-                    {this.state.jobs.job_assignee !== '-'
-                        && <WrappedLink
+                    {this.state.jobs.job_assignee !== '-' &&
+                    this.state.quotations &&
+                    this.state.quotations[0] &&
+                    this.props.user_id == this.state.quotations[0].tradieid &&
+                        <WrappedLink
                             to={"/job/invoice/" + this.state.jobs.job_id}
                             buttonClasses={['btn', 'btn-info', 'mr-2']}
                             click={() => this.handleInvoiceClick()}>Invoice</WrappedLink>}
