@@ -92,7 +92,7 @@ class JobDetail extends Component {
                     <h5 >Trader ID: {this.state.jobs.job_assignee}</h5>
                     <h5>Date: {this.state.jobs.date}</h5>
                     <h5>Time: {this.state.jobs.time}</h5>
-                    {this.props.isAuthenticated && this.props.user_id === this.state.jobs.job_creator
+                    {/* {this.props.isAuthenticated && this.props.user_id === this.state.jobs.job_creator
                         && <button
                             className="btn btn-danger"
                             style={{ float: 'right', padding: '6px 12px' }}
@@ -101,7 +101,7 @@ class JobDetail extends Component {
                         && <WrappedLink
                             to={"/article/edit/" + this.props.match.params.id}
                             buttonClasses={['btn', 'btn-info', 'mr-2']}
-                            click={() => this.handleEditArticleClick()}>Edit</WrappedLink>}
+                            click={() => this.handleEditArticleClick()}>Edit</WrappedLink>} */}
                     {this.props.isAuthenticated && this.props.user_id !== this.state.jobs.job_creator
                         && <WrappedLink
                             to={"/quote/add/" + this.props.match.params.id}
