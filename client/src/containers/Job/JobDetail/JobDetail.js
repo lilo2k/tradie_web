@@ -10,7 +10,8 @@ import './JobDetail.css'
 class JobDetail extends Component {
     state = {
         jobs: {},
-        quotations: []
+        quotations: [],
+        selectedQuotation: {}
     }
 
     componentDidMount() {
@@ -18,9 +19,9 @@ class JobDetail extends Component {
         this.getSingleJob();
     }
 
-
     getSingleJob() {
         console.log(this.props.match.params.id);
+        let apiURLforQuotation = '';
         if (this.props.match.params.id) {
             let apiURL = Constants.URL + 'jobs/?jid=' + this.props.match.params.id;
             console.log(apiURL)
@@ -34,22 +35,27 @@ class JobDetail extends Component {
                             { jobs: res.jobs }
                         );
                     }
+                    if (res.jobs.job_assignee && res.jobs.job_assignee !== "-") {
+                        apiURLforQuotation = Constants.URL + 'billing/quotation/?qid=' + res.jobs.job_assignee;
+                    }
+                    else {
+                        apiURLforQuotation = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
+                    }
+                    // let apiURLQ = Constants.URL + '/billing/quotation/';
+                    console.log(apiURLforQuotation)
+                    fetch(apiURLforQuotation)
+                        .then(res => res.json())
+                        .then(res => {
+                            console.log(res);
+                            console.log(JSON.stringify(res.quotations));
+                            if (res.quotations) {
+                                this.setState(
+                                    { quotations: res.quotations }
+                                );
+                            }
+                        })
                 })
 
-            let apiURLQ = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
-            // let apiURLQ = Constants.URL + '/billing/quotation/';
-            console.log(apiURLQ)
-            fetch(apiURLQ)
-                .then(res => res.json())
-                .then(res => {
-                    console.log(res);
-                    console.log(JSON.stringify(res.quotations));
-                    if (res.quotations) {
-                        this.setState(
-                            { quotations: res.quotations }
-                        );
-                    }
-                })
         }
     }
 
@@ -65,6 +71,19 @@ class JobDetail extends Component {
     handleEditArticleClick() {
         this.props.history.replace({ pathname: '/job/edit/' + this.props.match.params.id });
     }
+
+    handleAssignClick(item) {
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                jobs: {
+                    ...prevState.jobs,
+                    job_assignee: item
+                }
+            };
+        });
+    }
+
 
     handleQuoteClick() {
         console.log("params:" + this.props.match.params.id)
@@ -89,7 +108,7 @@ class JobDetail extends Component {
                     <h3 >{this.state.jobs.description}</h3>
                     <h5 >Job ID: {this.state.jobs.job_id}</h5>
                     <h5 >Customer ID: {this.state.jobs.job_creator}</h5>
-                    <h5 >Trader ID: {this.state.jobs.job_assignee}</h5>
+                    <h5 >Quotation ID: {this.state.jobs.job_assignee}</h5>
                     <h5>Date: {this.state.jobs.date}</h5>
                     <h5>Time: {this.state.jobs.time}</h5>
                     {/* {this.props.isAuthenticated && this.props.user_id === this.state.jobs.job_creator
@@ -102,7 +121,7 @@ class JobDetail extends Component {
                             to={"/article/edit/" + this.props.match.params.id}
                             buttonClasses={['btn', 'btn-info', 'mr-2']}
                             click={() => this.handleEditArticleClick()}>Edit</WrappedLink>} */}
-                    {this.props.isAuthenticated && this.props.user_id !== this.state.jobs.job_creator
+                    {this.props.isAuthenticated && this.state.jobs.job_assignee == '-' && this.props.user_id != this.state.jobs.job_creator
                         && <WrappedLink
                             to={"/quote/add/" + this.props.match.params.id}
                             buttonClasses={['btn', 'btn-info', 'mr-2']}
@@ -117,7 +136,7 @@ class JobDetail extends Component {
                     <Table selectable celled>
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Job ID</Table.HeaderCell>
+                                <Table.HeaderCell>Quotation ID</Table.HeaderCell>
                                 <Table.HeaderCell>Comment</Table.HeaderCell>
                                 <Table.HeaderCell>Date</Table.HeaderCell>
                                 <Table.HeaderCell>Status</Table.HeaderCell>
@@ -132,9 +151,9 @@ class JobDetail extends Component {
                             {
                                 this.state.quotations.map(quotation => {
                                     return (
-                                        <Table.Row key={quotation._id} >
+                                        <Table.Row key={quotation.qid} >
                                             <Table.Cell>
-                                                {quotation.job_id}
+                                                {quotation.qid}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {quotation.comment}
@@ -158,11 +177,17 @@ class JobDetail extends Component {
                                                 {quotation.tradieid}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {this.props.isAuthenticated && this.props.user_id !== quotation.tradieid
+                                                {this.props.isAuthenticated && this.state.jobs.job_assignee === '-' && this.props.user_id !== quotation.tradieid
                                                     && <WrappedLink
-                                                        to={"/quote/add/" + this.props.match.params.id}
+                                                        // to={"/job/assign/" + quotation.qid}
                                                         buttonClasses={['btn', 'btn-info', 'mr-2']}
-                                                        click={() => this.handleQuoteClick()}>Assign</WrappedLink>}
+                                                        click={() => this.handleAssignClick(quotation.qid)}>Assign</WrappedLink>}
+                                                {this.state.jobs.job_assignee !== '-' && this.state.jobs.job_assignee == quotation.qid
+                                                    && <button disabled="false"
+                                                        className="btn btn-danger"
+                                                        style={{ float: 'right', padding: '6px 12px' }}
+                                                    >Assigned</button>}
+                                                {/* {this.state.jobs.job_assignee == quotation.qid ? 'Assigned':''} */}
                                             </Table.Cell>
                                         </Table.Row>
                                     )
@@ -170,6 +195,14 @@ class JobDetail extends Component {
                             }
                         </Table.Body>
                     </Table>
+                </div>
+                <br />
+                <div className="container">
+                    {this.state.jobs.job_assignee !== '-'
+                        && <WrappedLink
+                            to={"/job/invoice/" + this.state.jobs.job_id}
+                            buttonClasses={['btn', 'btn-info', 'mr-2']}
+                            click={() => this.handleInvoiceClick()}>Invoice</WrappedLink>}
                 </div>
             </div>
         );

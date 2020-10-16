@@ -5,11 +5,21 @@ import { submitNewJob } from '../../../store/actions/jobsActions';
 import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
 
+import {
+    Dropdown,
+    Grid,
+    Button,
+    Radio,
+    Form,
+    Input,
+    Checkbox
+} from 'semantic-ui-react'
+
 const FIELDS = [
-    { name: 'description', type: 'text', label: 'Description' },
+    // { name: 'description', type: 'text', label: 'Description' },
     { name: 'creator_id', type: 'text', label: 'Customer ID', disabled: 'disabled' },
-    { name: 'date', type: 'text', label: 'Date', placeholder:"dd/mm/yyyy"},
-    { name: 'time', type: 'text', label: 'Time', placeholder:"hh:mm-hh:mm" }
+    { name: 'date', type: 'text', label: 'Date', placeholder: "dd/mm/yyyy" },
+    { name: 'time', type: 'text', label: 'Time', placeholder: "hh:mm-hh:mm" }
 ];
 
 class AddJob extends Component {
@@ -112,29 +122,40 @@ class AddJob extends Component {
                 <br />
                 <h3 className="text-center">Add Job</h3>
                 <div className="jumbotron">
-                    <form onSubmit={this.handleNewJobSubmit}>
-                        {/* <InputField key={FIELDS[0].name}
+                    <Form onSubmit={this.handleNewJobSubmit}>
+                        {/* <Form.Group widths={8}> */}
+                            {/* <div className="form-group">
+                                <label>Description</label>
+                                <textarea
+                                    name="description" style={{ height: '200px' }}
+                                    className="form-control" placeholder="Description"
+                                    onChange={this.handleInputChange}
+                                    defaultValue={this.state.job.description} />
+                                {this.state.errors.body !== '' && <ErrorMsg msg={this.state.errors.body} />}
+                            </div> */}
+                            <InputField key="description"
+                            type="text" name="description" label="Description"
+                            errors={this.state.errors}
+                            onChange={this.handleInputChange} /> 
+                        {/* </Form.Group> */}
+                        <Form.Group>
+
+                            {/* <InputField key={FIELDS[0].name}
                             type={FIELDS[0].type} name={FIELDS[0].name} label={FIELDS[0].label}
                             defaultValue={this.state.article.title}
                             errors={this.state.errors}
                             onChange={this.handleInputChange} />
-                        <InputField key={FIELDS[1].name}
+                            <InputField key={FIELDS[1].name}
                             type={FIELDS[1].type} name={FIELDS[1].name} label={FIELDS[1].label}
                             defaultValue={this.props.authenticatedUsername} disabled={FIELDS[1].disabled}
                             errors={this.state.errors}
                             onChange={this.handleInputChange} /> */}
-                        {/* <div className="form-group">
-                            <label>Body</label>
-                            <textarea
-                                name="body" style={{ height: '200px' }}
-                                className="form-control" placeholder="Your article's contents goes here... Good luck!"
-                                onChange={this.handleInputChange}
-                                defaultValue={this.state.article.body} />
-                            {this.state.errors.body !== '' && <ErrorMsg msg={this.state.errors.body} />}
-                        </div> */}
-                        {inputFields}
+
+                            {inputFields}
+                        </Form.Group>
+                        
                         <button className="btn btn-success">Submit</button>
-                    </form>
+                    </Form>
                 </div>
             </div>
         );

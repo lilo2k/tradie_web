@@ -14,8 +14,8 @@ const FIELDS = [
     { name: 'item1', type: 'text', label: 'Item1' },
     { name: 'no_of_workers', type: 'text', label: 'No of workers' },
     { name: 'qty1', type: 'text', label: 'Item1 quantity' },
-    { name: 'total_price', type: 'text', label: 'Total Price' },
     { name: 'wage_hr', type: 'text', label: 'Hourly wage' },
+    { name: 'total_price', type: 'text', label: 'Total Price' },
     { name: 'status', type: 'text', label: 'Status', disabled: 'disabled'  },
     { name: 'tradieid', type: 'text', label: 'Traide ID', disabled: 'disabled'  },
 ];
