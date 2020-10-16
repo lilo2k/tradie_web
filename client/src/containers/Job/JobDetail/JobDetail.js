@@ -5,7 +5,7 @@ import { Table } from 'semantic-ui-react';
 import * as Constants from '../../../Constants'
 
 import './JobDetail.css'
-import ListQuotation from '../../Quotation/ListQuotations/ListQuotation';
+// import ListQuotation from '../../Quotation/ListQuotations/ListQuotation';
 
 class JobDetail extends Component {
     state = {
@@ -170,11 +170,11 @@ class JobDetail extends Component {
 
 const mapStateToProps = state => {
     return {
-        article: state.articles.article,
+        // article: state.articles.article,
         isAuthenticated: state.users.isAuthenticated,
         authenticatedUsername: state.users.authenticatedUsername,
         user_id: state.users.user_id,
-        quotations: state.articles.quotations,
+        // quotations: state.articles.quotations,
     };
 };
 

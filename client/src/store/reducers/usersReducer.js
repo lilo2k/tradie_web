@@ -16,12 +16,13 @@ const validCredentials = () => {
 const initialState = {
     isAuthenticated: validCredentials(),
     authenticatedUsername: validCredentials() === false ? '' : jwt.decode(localStorage.getItem('jwtToken')).username,
-    user_id: validCredentials() === false ? '' : jwt.decode(localStorage.getItem('jwtToken')).user_id
+    user_id: validCredentials() === false ? '' : jwt.decode(localStorage.getItem('jwtToken')).userid
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.LOGIN_SUCCESSFUL:
+            console.log(action.user_id)
             return {
                 isAuthenticated: true,
                 authenticatedUsername: action.authenticatedUsername,

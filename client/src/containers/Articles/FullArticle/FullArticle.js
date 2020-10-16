@@ -5,7 +5,7 @@ import WrappedLink from '../../../components/WrappedLink/WrappedLink';
 import { Table } from 'semantic-ui-react';
 
 import './FullArticle.css'
-import ListQuotation from '../../Quotation/ListQuotations/ListQuotation';
+// import ListQuotation from '../../Quotation/ListQuotations/ListQuotation';
 
 class FullArticle extends Component {
     componentDidMount() {
@@ -120,11 +120,11 @@ class FullArticle extends Component {
 
 const mapStateToProps = state => {
     return {
-        article: state.articles.article,
+        // article: state.articles.article,
         isAuthenticated: state.users.isAuthenticated,
         authenticatedUsername: state.users.authenticatedUsername,
         user_id: state.users.user_id,
-        quotations: state.articles.quotations,
+        // quotations: state.articles.quotations,
     };
 };
 

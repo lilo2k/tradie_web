@@ -42,10 +42,10 @@ class Home extends Component {
     }
 
     componentWillMount() {
+        this.getAllJobs();
     }
 
     componentDidMount() {
-        this.getAllJobs();
     }
 
     handleClick = itemId => {

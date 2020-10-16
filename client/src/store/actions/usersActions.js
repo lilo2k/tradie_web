@@ -25,29 +25,6 @@ export const userSignupRequest = (userSignupDetails) => {
         return fetch('/api/users/signup', options(userSignupDetails))
     }
 }
-export const userLoginRequest_old = (userLoginDetails) => {
-
-    return dispatch => {
-        return fetch('/api/users/login', options(userLoginDetails))
-            .then(res => res.json())
-            .then(res => {
-                console.log(res)
-                if (res.success) {
-                    const token = res.token;
-                    delete res.token;
-                    localStorage.setItem('jwtToken', token);
-                    console.log(jwt.decode(token).user_id);
-                    dispatch({
-                        type: actionTypes.LOGIN_SUCCESSFUL,
-                        authorizationToken: token,
-                        authenticatedUsername: jwt.decode(token).username,
-                        user_id: jwt.decode(token).user_id
-                    });
-                }
-                return res;
-            })
-    }
-}
 
 export const userLoginRequest = (userLoginDetails) => {
     return dispatch => {
@@ -79,14 +56,14 @@ export const userLoginRequest = (userLoginDetails) => {
                     const token = res.token;
                     delete res.token;
                     localStorage.setItem('jwtToken', token);
-                    let userid = jwt.decode(token).userid || ''; 
                     let username = jwt.decode(token).username || '';
-                    console.log(userid);
+                    let user_id = jwt.decode(token).userid || ''; 
+                    console.log(user_id);
                     dispatch({
                         type: actionTypes.LOGIN_SUCCESSFUL,
                         authorizationToken: token,
                         authenticatedUsername: username,
-                        user_id: userid
+                        user_id: user_id
                     });
                 // }
                 return res;
