@@ -81,7 +81,7 @@ class Home extends Component {
                                     <Table.HeaderCell>Description</Table.HeaderCell>
                                     <Table.HeaderCell>Date</Table.HeaderCell>
                                     <Table.HeaderCell>Time</Table.HeaderCell>
-                                    <Table.HeaderCell>Creator</Table.HeaderCell>
+                                    <Table.HeaderCell>Creator ID</Table.HeaderCell>
                                     <Table.HeaderCell>State</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>

@@ -117,14 +117,15 @@ class JobDetail extends Component {
                     <Table selectable celled>
                         <Table.Header>
                             <Table.Row>
+                                <Table.HeaderCell>Job ID</Table.HeaderCell>
                                 <Table.HeaderCell>Comment</Table.HeaderCell>
                                 <Table.HeaderCell>Date</Table.HeaderCell>
-                                <Table.HeaderCell>Job ID</Table.HeaderCell>
-                                <Table.HeaderCell>No of workers</Table.HeaderCell>
                                 <Table.HeaderCell>Status</Table.HeaderCell>
+                                <Table.HeaderCell>No of workers</Table.HeaderCell>
+                                <Table.HeaderCell>Wage hourly</Table.HeaderCell>
                                 <Table.HeaderCell>Total Price</Table.HeaderCell>
                                 <Table.HeaderCell>Trader ID</Table.HeaderCell>
-                                <Table.HeaderCell>Wage hourly</Table.HeaderCell>
+                                <Table.HeaderCell>Assign</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -133,19 +134,22 @@ class JobDetail extends Component {
                                     return (
                                         <Table.Row key={quotation._id} >
                                             <Table.Cell>
+                                                {quotation.job_id}
+                                            </Table.Cell>
+                                            <Table.Cell>
                                                 {quotation.comment}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {quotation.date}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {quotation.job_id}
+                                                {quotation.status}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {quotation.no_of_workers}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {quotation.status}
+                                                {quotation.wage_hr}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {quotation.total_price}
@@ -154,7 +158,11 @@ class JobDetail extends Component {
                                                 {quotation.tradieid}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {quotation.wage_hr}
+                                                {this.props.isAuthenticated && this.props.user_id !== quotation.tradieid
+                                                    && <WrappedLink
+                                                        to={"/quote/add/" + this.props.match.params.id}
+                                                        buttonClasses={['btn', 'btn-info', 'mr-2']}
+                                                        click={() => this.handleQuoteClick()}>Assign</WrappedLink>}
                                             </Table.Cell>
                                         </Table.Row>
                                     )
