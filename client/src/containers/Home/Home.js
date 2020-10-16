@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Home.css';
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
-import * as Constants from '../../Constants'
 import { Link } from 'react-router-dom';
 import { useHistory, useParams } from "react-router-dom";
 import WrappedLink from '../../components/WrappedLink/WrappedLink';
+
+import * as Constants from '../../Constants'
 
 class Home extends Component {
     state = {

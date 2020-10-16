@@ -6,32 +6,46 @@ import { withRouter } from 'react-router-dom';
 import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
 
+import * as Constants from '../../../Constants'
+
 const FIELDS = [
     { name: 'job_id', type: 'text', label: 'Job ID', disabled: 'disabled' },
     { name: 'comment', type: 'text', label: 'Comment' },
     { name: 'item1', type: 'text', label: 'Item1' },
     { name: 'no_of_workers', type: 'text', label: 'No of workers' },
     { name: 'qty1', type: 'text', label: 'Item1 quantity' },
-    { name: 'status', type: 'text', label: 'Status' },
     { name: 'total_price', type: 'text', label: 'Total Price' },
-    { name: 'tradieid', type: 'text', label: 'Traide ID' },
     { name: 'wage_hr', type: 'text', label: 'Hourly wage' },
+    { name: 'status', type: 'text', label: 'Status', disabled: 'disabled'  },
+    { name: 'tradieid', type: 'text', label: 'Traide ID', disabled: 'disabled'  },
 ];
 
 class AddQuotation extends Component {
     state = {
-        article: {},
+        // article: {},
         errors: {},
-        job_id: '',
-        comment: '',
-        item1: '',
-        no_of_workers: '',
-        qty1: '',
+        // job_id: '',
+        // comment: '',
+        // item1: '',
+        // no_of_workers: '',
+        // qty1: '',
         // status: '',
-        total_price: '',
-        tradieid: '',
-        wage_hr: '',
+        // total_price: '',
+        // tradieid: '',
+        // wage_hr: '',
+        quotation: {}
+    };
 
+    options = (data) => {
+        return {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify(data)
+        };
     };
 
     componentWillMount() {
@@ -58,8 +72,11 @@ class AddQuotation extends Component {
         console.log(this.props.authenticatedUsername)
         // console.log(jwt.decode(localStorage.getItem('jwtToken')).user_id)
         this.setState({
-            job_id: this.props.match.params.id,
-            tradieid: this.props.user_id
+            quotation: {
+                job_id: this.props.match.params.id,
+                tradieid: this.props.user_id,
+                status: 0
+            }
         });
     }
 
@@ -81,7 +98,10 @@ class AddQuotation extends Component {
         this.setState((prevState) => {
             return {
                 ...prevState,
-                [field]: value,
+                quotation: {
+                    ...prevState.quotation,
+                    [field]: value
+                },
                 errors: { ...errors }
             };
         })
@@ -91,66 +111,69 @@ class AddQuotation extends Component {
     handleAddQuoteSubmit = (e) => {
         e.preventDefault();
         // console.log("add quotation");
-        // let errors = { ...this.state.errors };
-        // const formValuesValid = Object.keys(errors).filter(field => errors[field] !== "").length === 0 ? true : false;
-        // if (!formValuesValid) {
-        //     return;
-        // } else {
-        //     console.log(this.state.article);
-        //     console.log(this.props.user_id);
-        //     console.log(this.props.authenticatedUsername);
-        //     this.setState((prevState) => {
-        //         return {
-        //             ...prevState,
-        //             article: {
-        //                 ...prevState.article,
-        //                 trader_user_id: this.props.user_id
-        //             }
-        //         };
-        //     }, () => {
-        //         this.props.saveQuotation(this.state.article)
-        //             .then(res => {
-        //                 if (res.errors) {
-        //                     this.setState(prevState => {
-        //                         return {
-        //                             ...prevState,
-        //                             article: { ...prevState.article },
-        //                             errors: { ...prevState.errors, ...res.errors }
-        //                         };
-        //                     });
-        //                 } else {
-        //                     localStorage.removeItem('Edit' + this.props.match.params.id);
-        //                     this.props.history.push('/articles/' + this.props.match.params.id);
-        //                 }
-        //             });
-        //     });
-        // }
+        let errors = { ...this.state.errors };
+        const formValuesValid = Object.keys(errors).filter(field => errors[field] !== "").length === 0 ? true : false;
+        if (!formValuesValid) {
+            return;
+        } else {
+            console.log(this.props.user_id);
+            console.log(this.props.authenticatedUsername);
+
+            console.log("add quotation");
+            // console.log("articleid:" + articleId);
+            console.log(this.state.quotation);
+            // .then(res => res.json())
+            // .then()
+
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    quotation: {
+                        ...prevState.quotation,
+                        // trader_user_id: this.props.user_id
+                    }
+                };
+            }, () => {
+                // this.props.saveQuotation(this.state.article)
+                fetch(Constants.URL + 'billing/quotation/', this.options(this.state.quotation))
+                    .then(res => {
+                        if (res.errors) {
+                            this.setState(prevState => {
+                                return {
+                                    ...prevState,
+                                    quotation: { ...prevState.quotation },
+                                    errors: { ...prevState.errors, ...res.errors }
+                                };
+                            });
+                        } else {
+                            // localStorage.removeItem('Edit' + this.props.match.params.id);
+                            this.props.history.push('/job/' + this.props.match.params.id);
+                        }
+                    });
+            });
+        }
     }
 
     componentWillUnmount() {
-        localStorage.removeItem('Edit' + this.props.match.params.id);
+        // localStorage.removeItem('Edit' + this.props.match.params.id);
     }
 
     render() {
-        // const inputFields = FIELDS.map(field =>
-        //     <InputField key={field.name}
-        //         type={field.type} name={field.name} label={field.label}
-        //         disabled={field.disabled}
-        //         errors={this.state.errors}
-        //         onChange={this.handleInputChange} />
-        // );
+        const inputFields = FIELDS.map(field =>
+            <InputField key={field.name}
+                type={field.type} name={field.name} label={field.label}
+                disabled={field.disabled}
+                errors={this.state.errors}
+                defaultValue={this.state.quotation[field.name]}
+                onChange={this.handleInputChange} />
+        );
         return (
             <div className="container">
                 <br />
                 <h3 className="text-center">Create Quotation</h3>
                 <div className="jumbotron">
                     <form onSubmit={this.handleAddQuoteSubmit}>
-                        {/* <InputField key={field.name}
-                            type={field.type} name={field.name} label={field.label}
-                            disabled={field.disabled}
-                            errors={this.state.errors}
-                            onChange={this.handleInputChange} /> */}
-                        <InputField label='Job ID'
+                        {/* <InputField label='Job ID'
                             name="job_id"
                             key="job_id"
                             type="text"
@@ -213,8 +236,8 @@ class AddQuotation extends Component {
                             onChange={this.handleInputChange}
                             value={this.state.wage_hr}
                             placeholder="Hourly Wage"
-                        />
-                        {/* {inputFields} */}
+                        /> */}
+                        {inputFields}
                         {/* <div className="form-group">
                             <label>Description</label>
                             <textarea
