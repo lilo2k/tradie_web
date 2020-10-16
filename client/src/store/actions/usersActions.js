@@ -22,7 +22,7 @@ export const checkUserUniqueness = ({ field, value }) => {
 
 export const userSignupRequest = (userSignupDetails) => {
     return dispatch => {
-        return fetch('/api/users/signup', options(userSignupDetails))
+        return fetch(Constants.URL + 'register', options(userSignupDetails))
     }
 }
 

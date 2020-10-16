@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { checkUserUniqueness, userSignupRequest } from '../../../store/actions/usersActions'
 import InputField from '../../../components/InputField/InputField';
+import Constants from '../../../Constants'
 
 // Check if E-mail is Valid or not
 const validateEmail = (email) => {
