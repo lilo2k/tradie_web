@@ -12,7 +12,7 @@ const validateEmail = (email) => {
 }
 
 const FIELDS = [
-    {name: 'name', type: 'text', label: 'Name'},
+    // {name: 'name', type: 'text', label: 'Name'},
     {name: 'username', type: 'text', label: 'Username'},
     {name: 'email', type: 'email', label: 'E-mail Address'},
     {name: 'password', type: 'password', label: 'Password'},
