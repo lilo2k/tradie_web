@@ -19,7 +19,7 @@ class JobDetail extends Component {
     componentDidMount() {
         // this.getSingleArticle();
         this.getSingleJob();
-        this.getQuotations();
+        // this.getQuotations();
         this.getSingleInvoice();
         this.getSingleRate();
     }
@@ -66,20 +66,20 @@ class JobDetail extends Component {
                         apiURLforQuotation = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
                     }
 
-                    // let apiURLQ = Constants.URL + '/billing/quotation/';
-                    // console.log(apiURLforQuotation)
-                    // fetch(apiURLforQuotation)
-                    //     .then(res => res.json())
-                    //     .then(res => {
-                    //         console.log(res);
-                    //         console.log(JSON.stringify(res.quotations));
-                    //         // console.log(JSON.stringify(res.quotations[0].tradieid));
-                    //         if (res.quotations) {
-                    //             this.setState(
-                    //                 { quotations: res.quotations }
-                    //             );
-                    //         }
-                    //     })
+                    let apiURLQ = Constants.URL + '/billing/quotation/';
+                    console.log(apiURLforQuotation)
+                    fetch(apiURLforQuotation)
+                        .then(res => res.json())
+                        .then(res => {
+                            console.log(res);
+                            console.log(JSON.stringify(res.quotations));
+                            // console.log(JSON.stringify(res.quotations[0].tradieid));
+                            if (res.quotations) {
+                                this.setState(
+                                    { quotations: res.quotations }
+                                );
+                            }
+                        })
                 })
 
         }
@@ -391,7 +391,9 @@ class JobDetail extends Component {
                 </div>
                 <div><br /></div>
                 {
-                    this.state.invoice && this.state.invoice.bill_id && this.state.rate && !this.state.rate.jobID &&
+                    this.props.user_id == this.state.jobs.job_creator &&
+                    this.state.invoice && this.state.invoice.bill_id && 
+                    this.state.rate && !this.state.rate.jobID &&
                     <div className="container">
                         Rate : <Input placeholder='rate' name="rateInput" onChange={ this.handleChange } value={this.state.rateInput}/> / 10
                         <button onClick={(e) => this.handleRateClick(e)} className={"btn btn-info mr-2 WrappedButton"}>
@@ -399,7 +401,10 @@ class JobDetail extends Component {
                         </button>
                     </div>}
                 {
-                    this.state.invoice && this.state.invoice.bill_id && this.state.rate && this.state.rate.jobID &&
+                    this.state.invoice && 
+                    this.state.invoice.bill_id && 
+                    this.state.rate && 
+                    this.state.rate.jobID &&
                     <div className="container">
                         {/* Rate :  <Input placeholder='rate' value={this.state.rate.rate} disabled="true" /> / 10  */}
                         Rate: <Label size="big">{this.state.rate.rate} / 10</Label>
