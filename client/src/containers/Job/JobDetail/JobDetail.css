@@ -9,3 +9,8 @@
     border-radius: 4px;
     box-shadow: inset 2px 2px #ccc;
 }
+
+.WrappedButton {
+    float: right;
+    padding: 6px 12px;
+}
