@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WrappedLink from '../../../components/WrappedLink/WrappedLink';
-import { Table, Input} from 'semantic-ui-react';
+import { Table, Input, Label } from 'semantic-ui-react';
 import * as Constants from '../../../Constants'
 
 import './JobDetail.css'
@@ -12,12 +12,33 @@ class JobDetail extends Component {
         jobs: {},
         quotations: [],
         invoice: {},
-        rate: {}
+        rate: {},
+        rateInput: ''
     }
 
     componentDidMount() {
         // this.getSingleArticle();
         this.getSingleJob();
+        this.getQuotations();
+        this.getSingleInvoice();
+        this.getSingleRate();
+    }
+
+    getQuotations() {
+        let apiURLforQuotation = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
+        console.log(apiURLforQuotation);
+        fetch(apiURLforQuotation)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                console.log(JSON.stringify(res.quotations));
+                // console.log(JSON.stringify(res.quotations[0].tradieid));
+                if (res.quotations) {
+                    this.setState(
+                        { quotations: res.quotations }
+                    );
+                }
+            });
     }
 
     getSingleJob() {
@@ -39,33 +60,50 @@ class JobDetail extends Component {
                     if (res.jobs.job_assignee && res.jobs.job_assignee !== "-") {
                         apiURLforQuotation = Constants.URL + 'billing/quotation/?qid=' + res.jobs.job_assignee;
 
-                        let apiURLforInvoice = Constants.URL + 'billing/invoice/' + this.props.match.params.id;
-                        this.getSingleInvoice(apiURLforInvoice);
+
                     }
                     else {
                         apiURLforQuotation = Constants.URL + '/billing/quotation/j/' + this.props.match.params.id;
                     }
 
                     // let apiURLQ = Constants.URL + '/billing/quotation/';
-                    console.log(apiURLforQuotation)
-                    fetch(apiURLforQuotation)
-                        .then(res => res.json())
-                        .then(res => {
-                            console.log(res);
-                            console.log(JSON.stringify(res.quotations));
-                            // console.log(JSON.stringify(res.quotations[0].tradieid));
-                            if (res.quotations) {
-                                this.setState(
-                                    { quotations: res.quotations }
-                                );
-                            }
-                        })
+                    // console.log(apiURLforQuotation)
+                    // fetch(apiURLforQuotation)
+                    //     .then(res => res.json())
+                    //     .then(res => {
+                    //         console.log(res);
+                    //         console.log(JSON.stringify(res.quotations));
+                    //         // console.log(JSON.stringify(res.quotations[0].tradieid));
+                    //         if (res.quotations) {
+                    //             this.setState(
+                    //                 { quotations: res.quotations }
+                    //             );
+                    //         }
+                    //     })
                 })
 
         }
     }
 
-    getSingleInvoice(apiURLforInvoice) {
+    getSingleRate() {
+        let apiURLforRate = Constants.URL + '/ratings/' + this.props.match.params.id;
+        console.log(apiURLforRate);
+        fetch(apiURLforRate)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                console.log(JSON.stringify(res));
+                // console.log(JSON.stringify(res.quotations[0].tradieid));
+                if (res) {
+                    this.setState(
+                        { rate: res }
+                    );
+                }
+            });
+    }
+
+    getSingleInvoice() {
+        let apiURLforInvoice = Constants.URL + 'billing/invoice/' + this.props.match.params.id;
         console.log(apiURLforInvoice);
         fetch(apiURLforInvoice)
             .then(res => res.json())
@@ -93,11 +131,40 @@ class JobDetail extends Component {
         this.props.history.replace({ pathname: '/job/edit/' + this.props.match.params.id });
     }
 
+    handleChange = (e) => {
+        this.setState({
+          rateInput: e.target.value,
+        });
+      };
+
+    //   handleChange({ target }) {
+    //     console.log(target.value);
+    //     this.setState({
+    //       [target.name]: target.value
+    //     });
+    //   }
+
     handleRateClick(e) {
         e.preventDefault();
         console.log(e);
         console.log(e.target.value);
-        alert("hello "+e.target.value);
+        // alert("hello " + e.target.value);
+
+        let apiURL = Constants.URL + 'ratings/' + this.props.match.params.id;
+        fetch(apiURL, {
+            headers: {
+                // 'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({ rate: this.state.rateInput })
+        })
+            // .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                this.getSingleRate();
+            })
     }
 
     handleInvoiceClick(e) {
@@ -125,8 +192,7 @@ class JobDetail extends Component {
             .then(res => {
                 console.log(res);
 
-                let invoiceURL = Constants.URL + 'billing/invoice/' + jobId;
-                this.getSingleInvoice(invoiceURL);
+                this.getSingleInvoice();
 
             })
 
@@ -323,13 +389,22 @@ class JobDetail extends Component {
                         </div>
                     }
                 </div>
-                <div><br/></div>
-                <div className="container">
-                <Input placeholder='rate' /> / 10 <
-                    button onClick={(e) => this.handleRateClick(e)} className={"btn btn-info mr-2 WrappedButton"}>
+                <div><br /></div>
+                {
+                    this.state.invoice && this.state.invoice.bill_id && this.state.rate && !this.state.rate.jobID &&
+                    <div className="container">
+                        Rate : <Input placeholder='rate' name="rateInput" onChange={ this.handleChange } value={this.state.rateInput}/> / 10
+                        <button onClick={(e) => this.handleRateClick(e)} className={"btn btn-info mr-2 WrappedButton"}>
                             Rate
                         </button>
-                </div>
+                    </div>}
+                {
+                    this.state.invoice && this.state.invoice.bill_id && this.state.rate && this.state.rate.jobID &&
+                    <div className="container">
+                        {/* Rate :  <Input placeholder='rate' value={this.state.rate.rate} disabled="true" /> / 10  */}
+                        Rate: <Label size="big">{this.state.rate.rate} / 10</Label>
+                    </div>
+                }
             </div>
         );
     }
