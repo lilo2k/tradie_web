@@ -9,7 +9,6 @@ import AddJob from './containers/Job/AddJob/AddJob';
 import EditJob from './containers/Job/EditJob/EditJob';
 import AddQuotation from './containers/Job/AddQuotation/AddQuotation';
 import NavigationBar from './containers/NavigationBar/NavigationBar';
-import FullArticle from './containers/Articles/FullArticle/FullArticle'
 
 class App extends Component {
     render() {
