@@ -153,7 +153,7 @@ class JobDetail extends Component {
         let apiURL = Constants.URL + 'ratings/' + this.props.match.params.id;
         fetch(apiURL, {
             headers: {
-                // 'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
@@ -181,7 +181,7 @@ class JobDetail extends Component {
         let apiURL = Constants.URL + 'billing/invoice/' + jobId;
         fetch(apiURL, {
             headers: {
-                // 'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
@@ -209,7 +209,7 @@ class JobDetail extends Component {
         let apiURL = Constants.URL + 'jobs/?jid=' + this.props.match.params.id;
         fetch(apiURL, {
             headers: {
-                // 'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
