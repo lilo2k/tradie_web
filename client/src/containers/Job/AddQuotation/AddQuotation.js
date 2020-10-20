@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-// import { saveQuotation } from '../../../store/actions/articlesActions';
-// import {  } from '../../../store/actions/quotationActions';
-import ErrorMsg from '../../../components/ErrorMsg/ErrorMsg';
 import InputField from '../../../components/InputField/InputField';
 
 import * as Constants from '../../../Constants'
